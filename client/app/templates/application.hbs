@@ -1,0 +1,10 @@
+<header>
+	{{#link-to 'index' (query-params q="london")}}London{{/link-to}}
+	{{#link-to 'index' (query-params q="bournemouth")}}Bournemouth{{/link-to}}
+	{{!-- <button {{action 'getBounds'}}>Get Bounds</button> --}}
+</header>
+
+<div id="container">
+	{{outlet}}
+</div>
+

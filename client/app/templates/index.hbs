@@ -1,0 +1,9 @@
+<div id="side-list">
+	<ul>
+		{{#each model}}
+			<li>{{title}}</li>
+		{{/each}}
+	</ul>
+</div>
+
+{{mapbox-map query=q store=store id="map"}}

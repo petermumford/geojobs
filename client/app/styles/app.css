@@ -1,0 +1,113 @@
+html, body, .ember-view, #map, #side-list {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+header {
+	position: fixed;
+	top: 0px;
+	height: 50px;
+}
+
+#container {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50px;
+	bottom: 0px;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 250px;
+}
+
+#side-list {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 250px;
+}
+
+.marker-stack {
+	width: 86px !important;
+	min-height: 28px !important;
+	z-index: 100 !important;
+}
+.marker-stack:hover {
+	z-index: 151 !important;
+}
+.marker-stack ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: block;
+	height: 100%;
+}
+.marker-stack ul li {
+	display: block;
+	width: 100%;
+	height: 28px;
+	background-color: #343434;
+	background-repeat: no-repeat;
+	background-position: 4px center;
+	color: #f0f0f0;
+	cursor: pointer;
+	text-align: center;
+	-webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	-ms-transition: all .2s ease;
+	-o-transition: all .2s ease;
+	transition: all .2s ease;
+	opacity: .8;
+	-webkit-transform-style: preserve-3d;
+}
+.marker-stack ul li:hover {
+	opacity: 1;
+}
+.marker-stack ul li div {
+	height: 28px;
+	line-height: 28px;
+	width: 100%;
+	font-family: 'Lato', sans-serif;
+	font-weight: 600;
+	font-size: 14px;
+	overflow: hidden;
+}
+.marker-stack ul li:last-child:after {
+	opacity: .8;
+	-webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	-ms-transition: all .2s ease;
+	-o-transition: all .2s ease;
+	transition: all .2s ease;
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 7px solid #343434;
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -7px;
+	margin-left: -5px;
+}
+
+.leaflet-numbered-markers-div-icon {
+    background: transparent;
+    border: none;
+}
+.leaflet-marker-icon .number{
+    background-color: #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    font-size: 9px;
+    position: absolute;
+    right: -6px;
+    text-align: center;
+    top: -3px;
+    vertical-align: middle;
+    width: 16px;
+}
