@@ -6,6 +6,10 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+	this.resource('index', {path: '/'}, function () {
+		this.resource('location', {path: '/:location'}, function () {});
+    this.route('job', { path: '/job/:job_id' });
+  });
 });
 
 export default Router;

@@ -1,9 +1,24 @@
+<div id="quickview" {{bind-attr class='isQuickviewOpen:open'}}>
+	<button {{action "closeQuickview"}}>Cancel</button>
+	<div>
+		<p>{{selectedCompanyLocation.company.name}}</p>
+		<p>{{selectedCompanyLocation.city}}</p>
+		<ul>
+			{{#each job in selectedCompanyLocation.jobs}}
+				<li>{{link-to job.title 'index.job' job}}</li>
+			{{else}}
+				<li>Sorry no jobs found</li>
+			{{/each}}
+		</ul>
+	</div>
+</div>
+
 <div id="side-list">
 	<ul>
-		{{#each model}}
-			<li>{{title}}</li>
+		{{#each job in model}}
+			<li>{{link-to job.title 'index.job' job}}</li>
 		{{/each}}
 	</ul>
 </div>
 
-{{mapbox-map query=q store=store id="map"}}
+{{mapbox-map query=currentLocation newLocation=newLocation store=store toggleQuickview="openQuickview" id="map"}}

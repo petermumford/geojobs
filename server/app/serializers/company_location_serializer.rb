@@ -4,5 +4,15 @@ class CompanyLocationSerializer < ActiveModel::Serializer
   attributes :id, :city, :county, :country, :lat, :lng
 
   has_one :company
-  # has_many :jobs
+  has_many :jobs
+
+  # def jobs
+  # 	object.jobs.recent(30.day.ago)
+  # end
+
+  # def include_associations!
+  #   include! :company
+  #   include! :jobs if options[:include_jobs]
+  # end
+
 end

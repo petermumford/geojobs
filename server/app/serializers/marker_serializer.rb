@@ -1,4 +1,3 @@
 class MarkerSerializer < ActiveModel::Serializer
-  attributes 	:id, :lat, :lng
-  has_many :jobs, serializer: JobShortSerializer
+  attributes 	:id, :lat, :lng, :jobs_count
 end

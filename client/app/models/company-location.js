@@ -6,6 +6,6 @@ export default DS.Model.extend({
   country: DS.attr('string'),
   lat: DS.attr(''),
   lng: DS.attr(''),
-  company: DS.belongsTo('company')
-  // jobs: DS.hasMany('job')
+  company: DS.belongsTo('company'),
+  jobs: DS.hasMany('job')
 });

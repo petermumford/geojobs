@@ -9,8 +9,8 @@ class Job < ActiveRecord::Base
   validates_presence_of :title, :description
 
   # ORDER BY (featured AND created_at > now() - interval '11 days') DESC NULLS LAST, created_at DESC
-  default_scope -> { order("(jobs.featured AND jobs.created_at > now() - interval '7 days') desc nulls last, jobs.created_at DESC") }
-  scope :recent, -> (days_ago) { where('jobs.created_at > ?', days_ago) }
+  default_scope -> { where('jobs.created_at > ?', 30.day.ago).order("(jobs.featured AND jobs.created_at > now() - interval '7 days') desc nulls last, jobs.created_at DESC") }
+  # scope :recent, -> (days_ago) { where('jobs.created_at > ?', days_ago) }
 
 	friendly_id :title, use: :slugged
   acts_as_mappable through: :company_location

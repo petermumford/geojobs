@@ -1,10 +1,11 @@
 <header>
-	{{#link-to 'index' (query-params q="london")}}London{{/link-to}}
-	{{#link-to 'index' (query-params q="bournemouth")}}Bournemouth{{/link-to}}
-	{{!-- <button {{action 'getBounds'}}>Get Bounds</button> --}}
+	{{location}}
+	{{search-box changedLocation=newLocation}}
 </header>
 
 <div id="container">
 	{{outlet}}
 </div>
+
+{{outlet 'modal'}}
 

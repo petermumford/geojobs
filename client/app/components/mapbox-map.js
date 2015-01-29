@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import customMarker from '../helpers/custom-marker'
 
 export default Ember.Component.extend({
 	queryParam: Em.computed.alias('query'),
@@ -18,6 +19,8 @@ export default Ember.Component.extend({
 	},
 
 	initMapBox: function() {
+		// console.log(this.get('markers').all('job').get('firstObject.title'));
+		// console.log(this.get('queryParam'));
 		var map, self=this;
 		L.mapbox.accessToken = this.Mapbox.config.accessToken;
 		map = L.mapbox.map(this.Mapbox.config.divId, this.Mapbox.config.tileLayer)
@@ -25,16 +28,25 @@ export default Ember.Component.extend({
 
 		map.on('moveend', function(e) {
 			self.refreshMarkers();
+			// var bounds = self.get('map').getBounds();
+			// var boxString = [bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast()].join(',');
+			// console.log(boxString);
+			// self.sendAction('refreshMarkers', {
+			// 	boundingBox: boxString
+			// });
 		});
 
 		this.set('map', map);
-
 		this.currentQueryParam();
 	}.on('didInsertElement'),
 
+  onInit: function() {
+    this.get('map').setView(this.get('newLocation').center.reverse(), this.Mapbox.config.zoom);
+  }.observes('newLocation'),
+
 	currentQueryParam: function() {
     this.changeMapPosition(this.get('queryParam'));
-  }.observes('queryParam'),
+  },//.observes('queryParam'),
 
   refreshMarkers: function() {
 		// var bounds = self.get('map').getBounds();
@@ -43,16 +55,16 @@ export default Ember.Component.extend({
 		var bounds = this.get('map').getBounds();
 		var boxString = [bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast()].join(',');
 
+		// this.sendAction('refreshMarkers', {
+		// 	boundingBox: boxString
+		// });
 		this.set('markers', Ember.ObjectProxy.extend(Ember.PromiseProxyMixin).create({
 			promise: Ember.$.getJSON(markerUrl, {bounds: boxString})
 		}));
-		// self.get('markers').set('promise', Ember.$.getJSON(markerUrl, {bounds: 'hello'}));
-	  // var marker;
-	  // marker = L.marker(result.latlng);
-	  // return marker.addTo(map);
   },
 
   drawMarkers: function() {
+  	// console.log( this.get('markers') );
 		var layerIndex = 0, self=this, markers=this.get('markers'), map = this.get('map');
 		var markerCluster = new L.MarkerClusterGroup();
 
@@ -72,12 +84,13 @@ export default Ember.Component.extend({
 				// m.jobs.forEach( function(j) {
 				// 	markerHtml += '<li><div>'+j.title+'</div></li>';
 				// })
-				marker = L.marker([m.lat, m.lng], {
+				marker = new customMarker([m.lat, m.lng], {
+					company_location_id: m.id,
 					icon: L.AwesomeMarkers.icon({
 						icon: '',
 						markerColor: 'darkblue',
 						prefix: 'fa',
-						html: m.jobs.length
+						html: m.jobs_count
 					})
 					// icon: L.divIcon({
 					// 	className: 'marker-stack',
@@ -86,6 +99,11 @@ export default Ember.Component.extend({
 					// 	html: '<ul>'+markerHtml+'</ul>'
 					// })
 				});
+				marker.on('click', function(e) {
+					self.sendAction('toggleQuickview', {
+						companyLocationId: e.target.options.company_location_id
+					});
+				})
 				// marker.addTo( map );
 				markerCluster.addLayer(marker);
 			});

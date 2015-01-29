@@ -1,11 +1,17 @@
 class JobsController < ApplicationController
 
 	def index
-		@jobs = Job.recent(30.day.ago).includes(:job_type, :company, :company_location)
+		# @jobs = Job.includes(:job_type, :company, :company_location)
+		@jobs = Job.includes(:job_type)
+								.search(params[:q])
+								# .recent(30.day.ago)
 
-		if params[:q].present?
-			@jobs = @jobs.search(params[:q])
-		end
+		# @jobs = CompanyLocation.search(params[:q])
+																				# .limit(1)
+
+		# if params[:q].present?
+		# 	@company_location = @company_location.search(params[:q])
+		# end
 
 		paginate @jobs#, per_page: 1
 	end
@@ -23,7 +29,10 @@ class JobsController < ApplicationController
 		# @markers = Job.select('jobs.*, company_locations.lat AS lat, company_locations.lng AS lng')
 		# 							.joins(:company_location)
 		# 							.in_bounds([bounds.first, bounds.last])
-		@markers = CompanyLocation.includes(:jobs).in_bounds([bounds.first, bounds.last])
+		@markers = CompanyLocation.select('company_locations.id, company_locations.lat, company_locations.lng, count(jobs.id) as jobs_count')
+															.joins(:jobs)
+															.in_bounds([bounds.first, bounds.last])
+															.group("company_locations.id")
 
 		render json: @markers, each_serializer: MarkerSerializer, root: false
 	end
