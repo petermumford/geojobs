@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
   selectedCompanyLocation: null,
 
   onInit: function() {
-    // console.log( this.get('newLocation') );
+    console.log( this.get('newLocation.place_name') );
     this.transitionToRoute('location', this.get('newLocation').place_name);
   }.observes('newLocation'),
 

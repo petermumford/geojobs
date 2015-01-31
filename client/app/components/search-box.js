@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import customMarker from '../helpers/custom-marker'
 
 export default Ember.Component.extend({
 	isOpen: false,
 	searchText: null,
+	textFieldComponent: null,
 	searchResults: [],
 	options: [],
 	selectedOption: null,
@@ -37,6 +37,12 @@ export default Ember.Component.extend({
 			this.get('selectedOption').deselect();
 			this.set('selectedOption', null);
 		};
+  },
+
+  /* Input Methods */
+
+  registerTextFieldComponent: function(input) {
+  	this.set('textFieldComponent', input);
   },
 
   handleKeydown: function(event) {
@@ -78,16 +84,11 @@ export default Ember.Component.extend({
 	}.on('focusIn'),
 
 	onFocusOut: function() {
-		// console.log('hello 1');
-		// Ember.run.later(this, function() {
-			if (!this.get('selectedOption')) {
+		Ember.run.later(this, function() {
+			if (!this.get('element').contains(document.activeElement)) {
 				this.close();
-		// 	// 	this.get('selectedOption').deselect();
-		// 	// 	this.set('selectedOption', null);
-			};
-		// 	this.close();
-		// }, 20);
-		// this.close();
+			}
+		}, 10);
 	}.on('focusOut'),
 
 	//
@@ -152,6 +153,7 @@ export default Ember.Component.extend({
 		// console.log( this.get('changedLocation') );
 		this.set('changedLocation', option)
 		this.close();
+		// this.get('textFieldComponent').blur();
 	},
 
 	registerOption: function(option) {
