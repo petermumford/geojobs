@@ -1,0 +1,13 @@
+<div class="modal-container">
+	{{#if locationCtrl.currentTransition}}
+		<button class="modal-button" {{action 'closeModal'}}>X</button>
+	{{else}}
+		<a href="#" {{action 'closeModal'}}>
+			Home
+		</a>
+	{{/if}}
+
+	<div class="modal">
+		{{component renderedComponent model=model closeAction="closeModal"}}
+	</div>
+</div>

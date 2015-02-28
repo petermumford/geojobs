@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :company_locations, except: [:new, :edit]
   # resources :job_types, except: [:new, :edit]
-  # resources :companies, except: [:new, :edit]
+  resources :companies
   resources :jobs, except: [:edit] do
     collection do
       get :markers
@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'site_settings' => 'site_settings#settings'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

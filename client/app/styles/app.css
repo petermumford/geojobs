@@ -29,6 +29,7 @@ header {
 
 #side-list {
 	position: absolute;
+	overflow: hidden;
 	top: 0;
 	right: 0;
 	width: 250px;
@@ -54,10 +55,24 @@ header {
 #quickview.open {
   right: 0;
 
-  -moz-transition: right 0.2s ease;
-  -webkit-transition: right 0.2s ease;
-  transition: right 0.2s ease;
+  -moz-transition: right 2.2s ease;
+  -webkit-transition: right 2.2s ease;
+  transition: right 2.2s ease;
 }
+
+/*
+	modal
+*/
+.modal-container {
+	background-color: #e3e0e2;
+	opacity: .95;
+	overflow-y: scroll;
+	position: fixed;
+	top: 0; right: 0;
+	height: 100%; width: 100%;
+	z-index: 99999;
+}
+
 
 
 /*

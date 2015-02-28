@@ -31,6 +31,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "ember-cli-mapbox": "0.0.2",
-    "ember-cli-htmlbars": "~0.6.0"
+    "ember-cli-htmlbars": "~0.6.0",
+    "ember-form-master-2000": "0.0.12"
   }
 }

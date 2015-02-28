@@ -7,8 +7,12 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
 	this.resource('index', {path: '/'}, function () {
-		this.resource('location', {path: '/:location'}, function () {});
-    this.route('job', { path: '/job/:job_id' });
+		this.route('location', {path: '/:location'});
+		this.route('company', { path: '/company/:companySlug' });
+    this.resource('job', function() {
+    	this.route('index', {path: ':jobSlug'});
+    	this.route('new');
+    });
   });
 });
 

@@ -1,0 +1,43 @@
+<h1>New Job</h1>
+
+{{#fm-form action='submit'}}
+	<h2>Company</h2>
+	{{fm-field type='text' label='Name' value=model.formObj.name errors=model.errors.title}}
+	{{fm-field type='text' label='Email' value=model.formObj.email errors=model.errors.title}}
+	{{fm-field type='text' label='URL' value=model.formObj.url errors=model.errors.title}}
+	{{fm-field type='text' label='Logo' value=model.formObj.logo errors=model.errors.title}}
+
+	<h2>Company Location</h2>
+	{{#each location in model.formObj.companyLocations}}
+		{{fm-field type='text' label='Title' value=location.title errors=model.errors.title}}
+		{{fm-field type='text' label='Email' value=location.email errors=model.errors.title}}
+		{{fm-field type='text' label='City' value=location.city errors=model.errors.title}}
+		{{fm-field type='text' label='County' value=location.county errors=model.errors.title}}
+		{{fm-field type='text' label='Country' value=location.country errors=model.errors.title}}
+
+		<h2>Job</h2>
+		{{#each job in location.jobs}}
+			{{fm-field type='text' value=job.title errors=model.errors.title}}
+			{{fm-field type='textarea' value=job.description errors=model.errors.description rows='6'}}
+		  {{fm-field
+		    label='Job Type'
+		    type='select'
+		    content=model.jobTypes
+		    optionValuePath='content'
+		    optionLabelPath='content.title'
+		    prompt='Select job type'
+		    value=job.jobType
+		    errors=model.errors.job_type
+		  }}
+		{{/each}}
+	{{/each}}
+
+	{{#if model.formObj.isSaving}}
+		Saving
+	{{else}}
+		{{fm-submit value='Create'}}
+		<a href="#" {{action 'cancel'}}>
+			Cancel
+		</a>
+	{{/if}}
+{{/fm-form}}

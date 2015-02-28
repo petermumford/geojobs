@@ -6,6 +6,8 @@ export default Ember.Component.extend({
 	store: null,
 	map: null,
 	markers: null,
+	sendContinousBounds: false,
+	doRefreshMarkers: true,
 
 	actions: {
 		moveMap: function	() {
@@ -14,7 +16,7 @@ export default Ember.Component.extend({
 		},
 		getBounds: function () {
 			// var map = this.get('leaflet').get('map');
-			alert( this.get('map').getBounds().toBBoxString() );
+			alert( this.get('map').getBounds() );
 		}
 	},
 
@@ -27,7 +29,24 @@ export default Ember.Component.extend({
 									.setView(this.Mapbox.config.center, this.Mapbox.config.zoom);
 
 		map.on('moveend', function(e) {
-			self.refreshMarkers();
+			if (self.get('sendContinousBounds')) {
+				self.updateWithNewBounds();
+			}
+
+			if (self.get('doRefreshMarkers') === true) {
+				self.refreshMarkers();
+			};
+
+
+			//
+			// reset doRefreshMarkers if set to false
+			// as this will need to used on every move
+			// this is set when clicking on a marker
+			// as we only want it to zoom in on the exiting marker
+			//
+			if (self.get('doRefreshMarkers') === false) {
+				self.set('doRefreshMarkers', true);
+			};
 			// var bounds = self.get('map').getBounds();
 			// var boxString = [bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast()].join(',');
 			// console.log(boxString);
@@ -40,12 +59,17 @@ export default Ember.Component.extend({
 		this.currentQueryParam();
 	}.on('didInsertElement'),
 
-  onInit: function() {
-    this.get('map').setView(this.get('newLocation').center.reverse(), this.Mapbox.config.zoom);
+  onNewLocation: function() {
+  	this.newMapPosition( this.get('newLocation.center').reverse() );
   }.observes('newLocation'),
 
+  updateWithNewBounds: function() {
+  	// console.log('updateWithNewBounds');
+  	this.sendAction('newBoundsAction', {bounds: this.get('map').getBounds()});
+  },
+
 	currentQueryParam: function() {
-    this.changeMapPosition(this.get('queryParam'));
+    this.newMapLocation(this.get('queryParam'));
   },//.observes('queryParam'),
 
   refreshMarkers: function() {
@@ -85,7 +109,10 @@ export default Ember.Component.extend({
 				// 	markerHtml += '<li><div>'+j.title+'</div></li>';
 				// })
 				marker = new customMarker([m.lat, m.lng], {
-					company_location_id: m.id,
+					markerDetails: {
+					 id: m.id,
+					 slug: m.slug
+					},
 					icon: L.AwesomeMarkers.icon({
 						icon: '',
 						markerColor: 'darkblue',
@@ -100,8 +127,10 @@ export default Ember.Component.extend({
 					// })
 				});
 				marker.on('click', function(e) {
-					self.sendAction('toggleQuickview', {
-						companyLocationId: e.target.options.company_location_id
+					self.set('doRefreshMarkers', false);
+					self.newMapPosition(e, 18);
+					self.sendAction('selectedMarker', {
+						markerDetails: e.target.options.markerDetails
 					});
 				})
 				// marker.addTo( map );
@@ -112,14 +141,31 @@ export default Ember.Component.extend({
 		};
   }.observes('markers.content.[]'),
 
-  changeMapPosition: function(address) {
+  newMapLocation: function(address) {
     var geocoder = L.mapbox.geocoder('mapbox.places'), self=this;
 
     if (address) {
 			geocoder.query(address, function(error, result) {
-				self.get('map').setView(result.latlng, self.Mapbox.config.zoom);
+				self.newMapPosition(result.latlng);
 			});
     }
+  },
+
+  newMapPosition: function(position, zoom=null) {
+  	var updateBounds = true;
+
+  	if (zoom === null) {
+  		zoom = this.Mapbox.config.zoom
+  	};
+  	if ((position.originalEvent) && (position.originalEvent.type === 'click')) {
+  		updateBounds = false;
+  		position = position.latlng;
+  	};
+    this.get('map').setView(position, zoom);
+
+    if ( (!this.get('sendContinousBounds')) && (updateBounds) ) {
+    	this.updateWithNewBounds();
+  	}
   }
 
 });

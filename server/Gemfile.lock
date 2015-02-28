@@ -96,6 +96,7 @@ GEM
       activesupport (>= 3.1)
       arel
     rack (1.6.0.beta)
+    rack-cors (0.3.1)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.2.0.beta4)
@@ -180,6 +181,7 @@ DEPENDENCIES
   kaminari
   pg
   pg_search
+  rack-cors
   rails (= 4.2.0.beta4)
   rails-api
   rspec-rails (~> 3.0.0)

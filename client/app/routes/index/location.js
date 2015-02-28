@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  // model: function(params) {
-  //   return this.store.find('job', {q: params.location});
-  // },
+  beforeModel: function(transition) {
+    this.controllerFor('index.location').set('currentTransition', transition);
+  },
 
   setupController: function (controller, model) {
   	this._super(controller, model);

@@ -2,11 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	isOpen: false,
+	queryParam: null,
 	searchText: null,
 	textFieldComponent: null,
 	searchResults: [],
 	options: [],
 	selectedOption: null,
+	preSelectFirstItem: false,
 	attributeBindings: [
     'is-open'
   ],
@@ -25,7 +27,7 @@ export default Ember.Component.extend({
   }.property('isOpen'),
 
   open: function() {
-    if (this.get('isOpen')) return;
+    if (this.get('isOpen') || this.get('preSelectFirstItem')) return;
     this.set('isOpen', true);
   },
 
@@ -38,6 +40,13 @@ export default Ember.Component.extend({
 			this.set('selectedOption', null);
 		};
   },
+
+  queryParamChanged: function() {
+  	if (Ember.isPresent(this.get('queryParam'))) {
+			this.set('preSelectFirstItem', true);
+			this.set('searchText', this.get('queryParam'));
+		}
+  }.observes('queryParam').on('didInsertElement'),
 
   /* Input Methods */
 
@@ -63,17 +72,21 @@ export default Ember.Component.extend({
 
 		Ember.$.getJSON(url).then(function(data) {
 			self.set('searchResults', data.features);
+
+			if (self.get('preSelectFirstItem') === true) {
+				self.set('preSelectFirstItem', false);
+				self.optionSelected( self.get('searchResults.0') );
+			};
 		});
 	},
 
 	searchTextChanged: function() {
-    this.open();
-
 		if (this.get('searchText.length') < 3) {
 			this.set('searchResults', []);
 			return;
 		}
 
+		this.open();
 		Ember.run.debounce(this, this.setSearchResults, 500);
 	}.observes('searchText'),
 
@@ -84,11 +97,18 @@ export default Ember.Component.extend({
 	}.on('focusIn'),
 
 	onFocusOut: function() {
+		//
+		// This is a horrible hack
+		// Need to work out a better way to close
+		// Only doing this so when a users clicks the
+		// li item it will delay the focusOut event
+		// so it captures the mouse click event
+		//
 		Ember.run.later(this, function() {
 			if (!this.get('element').contains(document.activeElement)) {
 				this.close();
 			}
-		}, 10);
+		}, 100);
 	}.on('focusOut'),
 
 	//

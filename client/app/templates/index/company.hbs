@@ -1,0 +1,15 @@
+{{!-- <div id="quickview" {{bind-attr class='animateViewIn:open'}}> --}}
+<div id="quickview" class="open">
+	<button {{action "closeCompanyView"}}>Cancel</button>
+	<div>
+		<p>{{model.company.name}}</p>
+		<p>{{model.city}}</p>
+		<ul>
+			{{#each job in model.jobs}}
+				<li>{{link-to job.title 'job.index' job}}</li>
+			{{else}}
+				<li>Sorry no jobs found</li>
+			{{/each}}
+		</ul>
+	</div>
+</div>

@@ -92,7 +92,9 @@ CREATE TABLE company_locations (
     lng double precision,
     company_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    title character varying,
+    slug character varying
 );
 
 
@@ -322,6 +324,13 @@ CREATE INDEX index_company_locations_on_lat_and_lng ON company_locations USING b
 
 
 --
+-- Name: index_company_locations_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_company_locations_on_slug ON company_locations USING btree (slug);
+
+
+--
 -- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -394,4 +403,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141121172900');
 INSERT INTO schema_migrations (version) VALUES ('20141121173230');
 
 INSERT INTO schema_migrations (version) VALUES ('20141122164430');
+
+INSERT INTO schema_migrations (version) VALUES ('20150222110945');
 

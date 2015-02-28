@@ -23,6 +23,8 @@ gem 'geokit-rails'
 gem 'friendly_id', '~> 5.0.0'
 gem 'kaminari'
 
+gem 'rack-cors', :require => 'rack/cors'
+
 group :development do
   # gem 'pry'
   # gem 'pry-remote'

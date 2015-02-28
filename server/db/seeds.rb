@@ -15,10 +15,7 @@ job_types.each_index do |i|
 end
 
 10.times do |c|
-	Company.create( name: "#{Faker::Company.name} - #{c}",
-									url: Faker::Internet.url('example.com'),
-									email: Faker::Internet.email,
-									logo: Faker::Company.logo )
+	Company.create( name: "#{Faker::Company.name} - #{c}", url: Faker::Internet.url('example.com'), email: Faker::Internet.email, logo: Faker::Company.logo )
 end
 
 15.times do |c|
@@ -37,16 +34,6 @@ end
 	job_type = JobType.order("RANDOM()").limit(1).first
 	company_location = CompanyLocation.order("RANDOM()").limit(1).first
 
-	job = Job.new( 	title: Faker::Commerce.product_name,
-									description: Faker::Lorem.paragraph(2),
-									featured: false )
-	job.job_type = job_type
-	job.company_location = company_location
+	job = Job.new( 	title: Faker::Commerce.product_name, description: Faker::Lorem.paragraph(2), featured: false, job_type: job_type, company_location: company_location )
 	job.save
 end
-
-# c = Company.create(name: 'Aviaator', url: 'http://www.aviaator.com', email: 'a@example.com')
-# cl = CompanyLocation.create(email: 'test@example.com', city: 'London', lat: Faker::Address.latitude, lng: Faker::Address.longitude)
-# j = Job.create(title: Faker::Commerce.product_name, description: Faker::Lorem.paragraph(2))
-# cl.company = c
-# j.company_location = cl
