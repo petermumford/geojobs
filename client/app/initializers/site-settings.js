@@ -1,3 +1,5 @@
+import SiteSettings from '../utils/site-settings'
+
 export function initialize(container, application) {
 
 	var store = container.lookup('store:main')
@@ -18,10 +20,17 @@ export function initialize(container, application) {
 			application.advanceReadiness();
 		});
 
+	// register our logger
+  application.register('site-settings:main', SiteSettings);
+  // inject siteSettings
+  application.inject('component', 'siteSettings', 'site-settings:main');
+  application.inject('controller', 'siteSettings', 'site-settings:main');
+  application.inject('model', 'siteSettings', 'site-settings:main');
+  application.inject('route', 'siteSettings', 'site-settings:main');
 }
 
 export default {
   name: 'site-settings',
-  after: 'site-settings-service',
+  after: 'store',
   initialize: initialize
 };

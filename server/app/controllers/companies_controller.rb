@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
 		if @job.save
 			render json: @job
 		else
-			render json: @job.errors, status: 422
+			render json: {errors: @job.errors}, status: 422
 		end
 	end
 

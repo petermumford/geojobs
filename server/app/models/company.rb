@@ -1,3 +1,5 @@
+require 'uri'
+
 class Company < ActiveRecord::Base
 	has_many :company_locations
 	has_many :jobs, through: :company_locations
@@ -5,6 +7,8 @@ class Company < ActiveRecord::Base
 	accepts_nested_attributes_for :company_locations
 
 	validates_presence_of :name, :url, :email
+	validates_format_of :url, :with => URI.regexp(['http'])
+	# validates_associated :company_locations
 
 	after_save :create_slug
 

@@ -12,9 +12,11 @@ export default Ember.Component.extend({
 			}
 
 			this.get('model.formObj').save().then( function(response) {
-				console.log('success', response);
+				// console.log('success', response);
 			}, function(error) {
-				_this.set('model.errors', error.errors);
+				// console.log(error);
+				// console.log(_this.get('model.formObj.errors.companyLocations'));
+				// _this.set('model.errors', error.errors);
 			});
 		},
 

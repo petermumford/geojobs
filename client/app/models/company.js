@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+// import EmberValidations from 'ember-validations';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
@@ -7,4 +8,19 @@ export default DS.Model.extend({
   logo: DS.attr('string'),
   slug: DS.attr('string'),
   companyLocations: DS.hasMany('companyLocation')
+
+  // validations: {
+  // 	name: {
+  // 		presence: true,
+  // 		length: { minimum: 5 }
+  // 	},
+  // 	email: {
+  // 		presence: true
+  // 	},
+  // 	logo: {
+  // 		presence: true
+  // 	},
+  // 	companyLocations: true
+  // }
+
 });

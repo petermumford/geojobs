@@ -10,4 +10,12 @@ export default DS.Model.extend({
   lng: DS.attr(''),
   company: DS.belongsTo('company'),
   jobs: DS.hasMany('job', { async: true })
+
+  // validations: {
+  // 	title: {
+  // 		presence: true,
+  // 		length: { minimum: 5 }
+  // 	}
+  // }
+
 });

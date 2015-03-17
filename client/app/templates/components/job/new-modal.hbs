@@ -2,18 +2,18 @@
 
 {{#fm-form action='submit'}}
 	<h2>Company</h2>
-	{{fm-field type='text' label='Name' value=model.formObj.name errors=model.errors.title}}
-	{{fm-field type='text' label='Email' value=model.formObj.email errors=model.errors.title}}
-	{{fm-field type='text' label='URL' value=model.formObj.url errors=model.errors.title}}
-	{{fm-field type='text' label='Logo' value=model.formObj.logo errors=model.errors.title}}
+	{{fm-field type='text' label='Name' value=model.formObj.name errors=model.formObj.errors.name}}
+	{{fm-field type='text' label='Email' value=model.formObj.email errors=model.formObj.errors.email}}
+	{{fm-field type='text' label='URL' value=model.formObj.url errors=model.formObj.errors.url}}
+	{{fm-field type='text' label='Logo' value=model.formObj.logo errors=model.formObj.errors.logo}}
 
 	<h2>Company Location</h2>
 	{{#each location in model.formObj.companyLocations}}
-		{{fm-field type='text' label='Title' value=location.title errors=model.errors.title}}
-		{{fm-field type='text' label='Email' value=location.email errors=model.errors.title}}
-		{{fm-field type='text' label='City' value=location.city errors=model.errors.title}}
-		{{fm-field type='text' label='County' value=location.county errors=model.errors.title}}
-		{{fm-field type='text' label='Country' value=location.country errors=model.errors.title}}
+		{{fm-field type='text' label='Title' value=location.title errors=location.errors.title}}
+		{{fm-field type='text' label='Email' value=location.email errors=model.formObj.errors.company_locations.email}}
+		{{fm-field type='text' label='City' value=location.city errors=model.formObj.errors.company_locations.city}}
+		{{fm-field type='text' label='County' value=location.county errors=model.formObj.errors.company_locations.county}}
+		{{fm-field type='text' label='Country' value=location.country errors=model.formObj.errors.company_locations.country}}
 
 		<h2>Job</h2>
 		{{#each job in location.jobs}}
